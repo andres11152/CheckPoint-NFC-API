@@ -28,7 +28,16 @@ async function bootstrap() {
     const port = process.env.PORT || 3000;
 
     // 2. Configuración de Middlewares
-    app.use(cors()); // Habilita CORS para permitir peticiones desde el frontend
+    const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? ['https://mediumpurple-pigeon-582740.hostingersite.com']
+  : ['http://localhost:3000', 'http://localhost:5173'];
+
+    app.use(cors({
+      origin: allowedOrigins,
+      credentials: true
+    }));
+
+ // Habilita CORS para permitir peticiones desde el frontend
     app.use(express.json()); // Permite que Express procese cuerpos de petición en formato JSON
 
     // 3. Registrar las rutas de la API

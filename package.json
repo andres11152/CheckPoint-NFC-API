@@ -18,7 +18,7 @@
     "postgresql",
     "typeorm"
   ],
-  "author": "Tu Nombre Aquí",
+  "author": "Andrés Betancourt",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -38,6 +38,7 @@
     "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
+    "@types/express-serve-static-core": "^5.0.7",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.0.0",
     "@types/node": "^20.14.9",
