@@ -1,9 +1,9 @@
 import { DataSource, Repository } from 'typeorm';
-import { Attendance } from '../../../domain/entities/Attendance';
-import { Student } from '../../../domain/entities/Student'; // Importar Student
-import { AttendanceHistoryFilters } from '../../../domain/ports/in/AttendanceServicePort';
-import { AttendanceRepositoryPort } from '../../../domain/ports/out/AttendanceRepositoryPort';
-import { AttendanceSchema } from '../entities/AttendanceSchema';
+import { Attendance } from '../../../domain/entities/Attendance.js';
+import { Student } from '../../../domain/entities/Student.js'; // Importar Student
+import { AttendanceHistoryFilters } from '../../../domain/ports/in/AttendanceServicePort.js';
+import { AttendanceRepositoryPort } from '../../../domain/ports/out/AttendanceRepositoryPort.js';
+import { AttendanceSchema } from '../entities/AttendanceSchema.js';
 
 export class AttendanceTypeOrmRepository implements AttendanceRepositoryPort {
   private repository: Repository<Attendance>;

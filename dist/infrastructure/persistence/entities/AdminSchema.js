@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminSchema = void 0;
-const typeorm_1 = require("typeorm");
-exports.AdminSchema = new typeorm_1.EntitySchema({
+import { EntitySchema } from 'typeorm';
+export const AdminSchema = new EntitySchema({
     name: 'Admin',
     tableName: 'admins',
     columns: {

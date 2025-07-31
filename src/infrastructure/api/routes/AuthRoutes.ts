@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { AppDataSource } from '../../config/data-source'; // Importa tu data-source
-import { AdminTypeOrmRepository } from '../../persistence/repositories/AdminTypeOrmRepository';
-import { AuthUseCases } from '../../../domain/use-cases/AuthUseCases';
-import { AuthController } from '../controllers/AuthController';
+import { AppDataSource } from '../../config/data-source.js'; // Importa tu data-source
+import { AdminTypeOrmRepository } from '../../persistence/repositories/AdminTypeOrmRepository.js';
+import { AuthUseCases } from '../../../domain/use-cases/AuthUseCases.js';
+import { AuthController } from '../controllers/AuthController.js';
 
 const router = Router();
 

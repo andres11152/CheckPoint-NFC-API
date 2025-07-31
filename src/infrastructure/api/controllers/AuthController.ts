@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthServicePort } from '../../../domain/ports/in/AuthServicePort';
+import { AuthServicePort } from '../../../domain/ports/in/AuthServicePort.js';
 
 export class AuthController {
   // El controlador depende del puerto de servicio (el caso de uso)

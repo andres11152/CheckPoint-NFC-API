@@ -1,5 +1,5 @@
-import { Attendance } from '../../entities/Attendance';
-import { AttendanceHistoryFilters } from '../in/AttendanceServicePort'; // Reutilizamos los filtros
+import { Attendance } from '../../entities/Attendance.js';
+import { AttendanceHistoryFilters } from '../in/AttendanceServicePort.js'; // Reutilizamos los filtros
 
 export interface AttendanceRepositoryPort {
   /**

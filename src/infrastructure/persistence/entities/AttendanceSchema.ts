@@ -1,7 +1,7 @@
 // src/infrastructure/persistence/entities/AttendanceSchema.ts
 
 import { EntitySchema } from 'typeorm';
-import { Attendance, AttendanceType } from '../../../domain/entities/Attendance';
+import { Attendance, AttendanceType } from '../../../domain/entities/Attendance.js';
 
 // El import de Student ya no es estrictamente necesario aquí, pero es buena práctica mantenerlo
 import { Student } from '../../../domain/entities/Student'; 

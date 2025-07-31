@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppDataSource = void 0;
 // src/infrastructure/config/data-source.ts
-require("reflect-metadata");
-const typeorm_1 = require("typeorm");
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
 // Importa los esquemas de tus entidades
-const AdminSchema_1 = require("../persistence/entities/AdminSchema");
-const StudentSchema_1 = require("../persistence/entities/StudentSchema");
-const AttendanceSchema_1 = require("../persistence/entities/AttendanceSchema");
+import { AdminSchema } from '../persistence/entities/AdminSchema.js';
+import { StudentSchema } from '../persistence/entities/StudentSchema.js';
+import { AttendanceSchema } from '../persistence/entities/AttendanceSchema.js';
 // Configuración para la conexión a PostgreSQL con TypeORM
-exports.AppDataSource = new typeorm_1.DataSource({
+export const AppDataSource = new DataSource({
     type: 'postgres',
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT || '5432'),
@@ -24,9 +21,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     logging: true, // Ponlo en 'true' para ver las consultas SQL en la consola
     // Aquí se registran todas las entidades que TypeORM debe manejar
     entities: [
-        AdminSchema_1.AdminSchema,
-        StudentSchema_1.StudentSchema,
-        AttendanceSchema_1.AttendanceSchema,
+        AdminSchema,
+        StudentSchema,
+        AttendanceSchema,
     ],
     migrations: [],
     subscribers: [],

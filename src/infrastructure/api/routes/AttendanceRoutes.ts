@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { AppDataSource } from '../../config/data-source';
-import { authMiddleware } from '../middlewares/authMiddleware'; // 1. Importa el middleware
+import { AppDataSource } from '../../config/data-source.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js'; // 1. Importa el middleware
 
 // Importa las implementaciones que necesitas
-import { AttendanceTypeOrmRepository } from '../../persistence/repositories/AttendanceTypeOrmRepository';
-import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository';
-import { AttendanceUseCases } from '../../../domain/use-cases/AttendanceUseCases';
-import { AttendanceController } from '../controllers/AttendanceController';
+import { AttendanceTypeOrmRepository } from '../../persistence/repositories/AttendanceTypeOrmRepository.js';
+import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository.js';
+import { AttendanceUseCases } from '../../../domain/use-cases/AttendanceUseCases.js';
+import { AttendanceController } from '../controllers/AttendanceController.js';
 
 const router = Router();
 

@@ -1,10 +1,7 @@
-"use strict";
 // src/infrastructure/persistence/entities/AttendanceSchema.ts
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AttendanceSchema = void 0;
-const typeorm_1 = require("typeorm");
-const Attendance_1 = require("../../../domain/entities/Attendance");
-exports.AttendanceSchema = new typeorm_1.EntitySchema({
+import { EntitySchema } from 'typeorm';
+import { AttendanceType } from '../../../domain/entities/Attendance.js';
+export const AttendanceSchema = new EntitySchema({
     name: 'Attendance',
     tableName: 'attendances',
     columns: {
@@ -18,7 +15,7 @@ exports.AttendanceSchema = new typeorm_1.EntitySchema({
         },
         type: {
             type: 'enum',
-            enum: Attendance_1.AttendanceType,
+            enum: AttendanceType,
         },
     },
     relations: {

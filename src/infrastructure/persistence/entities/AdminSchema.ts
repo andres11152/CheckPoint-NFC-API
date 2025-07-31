@@ -1,5 +1,5 @@
 import { EntitySchema } from 'typeorm';
-import { Admin } from '../../../domain/entities/Admin';
+import { Admin } from '../../../domain/entities/Admin.js';
 
 export const AdminSchema = new EntitySchema<Admin>({
   name: 'Admin',

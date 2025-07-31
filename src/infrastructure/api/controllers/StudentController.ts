@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { StudentServicePort } from '../../../domain/ports/in/StudentServicePort';
+import { StudentServicePort } from '../../../domain/ports/in/StudentServicePort.js';
 
 export class StudentController {
   constructor(private readonly studentService: StudentServicePort) {}

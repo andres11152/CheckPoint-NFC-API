@@ -1,8 +1,5 @@
-"use strict";
 // src/domain/entities/Student.ts
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Student = void 0;
-class Student {
+export class Student {
     constructor(id, name, lastName, nfcId) {
         this.id = id;
         this.name = name;
@@ -15,4 +12,3 @@ class Student {
         return `${this.name} ${this.lastName}`;
     }
 }
-exports.Student = Student;

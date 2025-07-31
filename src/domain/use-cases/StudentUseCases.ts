@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as xlsx from 'xlsx';
-import { Student } from '../entities/Student';
-import { CreateStudentDto, StudentServicePort, UpdateStudentDto } from '../ports/in/StudentServicePort';
-import { StudentRepositoryPort } from '../ports/out/StudentRepositoryPort';
+import { Student } from '../entities/Student.js';
+import { CreateStudentDto, StudentServicePort, UpdateStudentDto } from '../ports/in/StudentServicePort.js';
+import { StudentRepositoryPort } from '../ports/out/StudentRepositoryPort.js';
 
 // Implementa el puerto de entrada, definiendo CÓMO se realizan las operaciones.
 export class StudentUseCases implements StudentServicePort {

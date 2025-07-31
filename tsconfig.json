@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    /* Modules */
-    "module": "commonjs",
-    "rootDir": "./src", // Especifica el directorio raíz de tus archivos fuente
-    "moduleResolution": "node",
-
-    /* Emit */
-    "outDir": "./dist", // Especifica dónde se guardarán los archivos compilados
+    "target": "ES2020",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    
-    /* Type Checking */
+    "skipLibCheck": true,
     "strict": true,
-    "skipLibCheck": true
+    "outDir": "dist"
   },
-  "include": ["src/**/*", "createAdmin.js"] // Asegúrate de que solo compile lo que está en la carpeta src
+  "ts-node": {
+    "esm": true
+  }
 }

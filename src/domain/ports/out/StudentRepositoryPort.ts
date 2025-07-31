@@ -1,4 +1,4 @@
-import { Student } from '../../entities/Student';
+import { Student } from '../../entities/Student.js';
 
 export interface StudentRepositoryPort {
   /**

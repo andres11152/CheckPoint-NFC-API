@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { Admin } from '../entities/Admin';
-import { AuthServicePort, LoginCredentialsDto } from '../ports/in/AuthServicePort';
-import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort';
+import { Admin } from '../entities/Admin.js';
+import { AuthServicePort, LoginCredentialsDto } from '../ports/in/AuthServicePort.js';
+import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort.js';
 
 export class AuthUseCases implements AuthServicePort {
   

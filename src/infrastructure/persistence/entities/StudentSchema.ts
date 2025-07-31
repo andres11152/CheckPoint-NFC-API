@@ -1,6 +1,6 @@
 // src/infrastructure/persistence/entities/StudentSchema.ts
 import { EntitySchema } from 'typeorm';
-import { Student } from '../../../domain/entities/Student'; // <-- Importas la entidad de dominio
+import { Student } from '../../../domain/entities/Student.js'; // <-- Importas la entidad de dominio
 
 export const StudentSchema = new EntitySchema<Student>({
   name: 'Student', // El nombre de la clase de dominio

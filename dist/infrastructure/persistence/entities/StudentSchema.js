@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentSchema = void 0;
 // src/infrastructure/persistence/entities/StudentSchema.ts
-const typeorm_1 = require("typeorm");
-exports.StudentSchema = new typeorm_1.EntitySchema({
+import { EntitySchema } from 'typeorm';
+export const StudentSchema = new EntitySchema({
     name: 'Student', // El nombre de la clase de dominio
     tableName: 'students', // El nombre de la tabla en la base de datos
     columns: {

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { AppDataSource } from '../../config/data-source';
-import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository';
-import { StudentUseCases } from '../../../domain/use-cases/StudentUseCases';
-import { StudentController } from '../controllers/StudentController';
-import { authMiddleware } from '../middlewares/authMiddleware'; // 1. Importa el middleware
+import { AppDataSource } from '../../config/data-source.js';
+import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository.js';
+import { StudentUseCases } from '../../../domain/use-cases/StudentUseCases.js';
+import { StudentController } from '../controllers/StudentController.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js'; // 1. Importa el middleware
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });

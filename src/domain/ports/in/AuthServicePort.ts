@@ -1,4 +1,4 @@
-import { Admin } from '../../entities/Admin';
+import { Admin } from '../../entities/Admin.js';
 
 // DTO para las credenciales de login.
 export type LoginCredentialsDto = {

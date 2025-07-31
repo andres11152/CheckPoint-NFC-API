@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import { Student } from '../../../domain/entities/Student';
-import { StudentRepositoryPort } from '../../../domain/ports/out/StudentRepositoryPort';
-import { StudentSchema } from '../entities/StudentSchema';
+import { Student } from '../../../domain/entities/Student.js';
+import { StudentRepositoryPort } from '../../../domain/ports/out/StudentRepositoryPort.js';
+import { StudentSchema } from '../entities/StudentSchema.js';
 
 export class StudentTypeOrmRepository implements StudentRepositoryPort {
   private repository: Repository<Student>;
