@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "es2016",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* Modules */
+    "module": "commonjs",
+    "rootDir": "./src", // Especifica el directorio raíz de tus archivos fuente
+    "moduleResolution": "node",
+
+    /* Emit */
+    "outDir": "./dist", // Especifica dónde se guardarán los archivos compilados
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "createAdmin.js"] // Asegúrate de que solo compile lo que está en la carpeta src
+}
