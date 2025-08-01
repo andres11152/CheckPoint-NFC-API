@@ -7,7 +7,7 @@ import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
 import { AppDataSource } from './infrastructure/config/data-source.js';
-// Importa tus NUEVOS archivos de rutas
+// Importa tus archivos de rutas
 import AuthRoutes from './infrastructure/api/routes/AuthRoutes.js';
 import StudentRoutes from './infrastructure/api/routes/StudentRoutes.js';
 import AttendanceRoutes from './infrastructure/api/routes/AttendanceRoutes.js';
@@ -22,20 +22,32 @@ async function bootstrap() {
         const app = express();
         const port = process.env.PORT || 3000;
         // 2. Configuración de Middlewares
-        const allowedOrigins = process.env.NODE_ENV === 'production'
-            ? ['https://mediumpurple-pigeon-582740.hostingersite.com']
-            : ['http://localhost:3000', 'http://localhost:5173'];
-        app.use(cors({
-            origin: allowedOrigins,
+        // --- CONFIGURACIÓN DE CORS MEJORADA ---
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://mediumpurple-pigeon-582740.hostingersite.com' // Asegúrate que esta es la URL correcta de tu frontend
+        ];
+        const corsOptions = {
+            origin: (origin, callback) => {
+                // El 'origin' es undefined en peticiones del mismo servidor o herramientas como Postman
+                if (!origin || allowedOrigins.includes(origin)) {
+                    console.log(`CORS: Petición permitida desde el origen: ${origin}`);
+                    callback(null, true);
+                }
+                else {
+                    console.error(`CORS: Petición bloqueada desde el origen: ${origin}`);
+                    callback(new Error('No permitido por CORS'));
+                }
+            },
             credentials: true
-        }));
-        // Habilita CORS para permitir peticiones desde el frontend
-        app.use(express.json()); // Permite que Express procese cuerpos de petición en formato JSON
+        };
+        app.use(cors(corsOptions));
+        app.use(express.json());
         // 3. Registrar las rutas de la API
-        // La inyección de dependencias ya se maneja dentro de cada archivo de rutas.
-        app.use('/api', AuthRoutes); // ej: /api/login
-        app.use('/api', StudentRoutes); // ej: /api/students, /api/students/import
-        app.use('/api', AttendanceRoutes); // ej: /api/attendance, /api/attendance/history
+        app.use('/api', AuthRoutes);
+        app.use('/api', StudentRoutes);
+        app.use('/api', AttendanceRoutes);
         // 4. Iniciar el servidor
         app.listen(port, () => {
             console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
