@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AppDataSource } from '../../config/data-source';
-import { authMiddleware } from '../middlewares/authMiddleware'; // Middleware JWT
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 // Importa las implementaciones necesarias
 import { AttendanceTypeOrmRepository } from '../../persistence/repositories/AttendanceTypeOrmRepository';
@@ -18,10 +18,17 @@ const attendanceController = new AttendanceController(attendanceService);
 
 // --- Definición de las Rutas ---
 
-// Ruta PÚBLICA para el lector NFC (sin middleware)
+/**
+ * Registro de asistencia vía NFC (PÚBLICO, sin JWT)
+ * Espera { nfcId: string } en el body
+ * POST /api/attendance/
+ */
 router.post('/', (req, res) => attendanceController.register(req, res));
 
-// Rutas PROTEGIDAS para el panel de administración
+/**
+ * Rutas PROTEGIDAS (requieren JWT para acceso administrativo)
+ * Ejemplo: /api/attendance/history
+ */
 router.get('/history', authMiddleware, (req, res) => attendanceController.getHistory(req, res));
 router.get('/export/pdf', authMiddleware, (req, res) => attendanceController.exportPdf(req, res));
 router.get('/export/excel', authMiddleware, (req, res) => attendanceController.exportExcel(req, res));
