@@ -13,7 +13,8 @@ export class AuthController {
         return;
       }
 
-      const result = await this.authService.login({ username, password });
+      const result = await this.authService.login(username, password);
+      
 
       if (!result) {
         res.status(401).json({ message: 'Credenciales inválidas.' });

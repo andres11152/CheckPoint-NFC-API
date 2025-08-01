@@ -22,6 +22,7 @@
   "author": "Andrés Betancourt",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
@@ -36,11 +37,12 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.21",
     "@types/express-serve-static-core": "^5.0.7",
-    "@types/jsonwebtoken": "^9.0.10",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^2.0.0",
     "@types/node": "^20.19.9",
     "@types/pdfkit": "^0.17.2",

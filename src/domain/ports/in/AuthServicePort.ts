@@ -1,16 +1,7 @@
-import { Admin } from '../../entities/Admin.js';
-
-// DTO para las credenciales de login.
-export type LoginCredentialsDto = {
-  username: string;
-  password: string;
-}
+import { Request } from 'express';
 
 export interface AuthServicePort {
-  /**
-   * Autentica a un administrador y retorna un token de sesión (JWT).
-   * @param credentials - El usuario y contraseña.
-   * @returns Un objeto con el token o null si las credenciales son inválidas.
-   */
-  login(credentials: LoginCredentialsDto): Promise<{ token: string } | null>;
+  login(email: string, password: string): Promise<string>; // retorna el token
+  verifyToken(token: string): any; // retorna el payload o lanza error
+  getUserFromRequest(req: Request): any;
 }

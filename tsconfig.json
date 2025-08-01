@@ -7,9 +7,9 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "strict": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["src/**/*"]
 }

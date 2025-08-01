@@ -1,60 +1,79 @@
-import { v4 as uuidv4 } from 'uuid';
-import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-import { Admin } from '../entities/Admin.js';
-import { AuthServicePort, LoginCredentialsDto } from '../ports/in/AuthServicePort.js';
+// src/application/useCases/AuthUseCases.ts (o la ruta que sea)
+
 import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort.js';
+import { AuthServicePort } from '../ports/in/AuthServicePort.js';
+import { Admin } from '../entities/Admin.js';
+import jwt from 'jsonwebtoken';
+const { sign, verify } = jwt;
+// AJUSTE: Cambiado 'bcryptjs' por 'bcrypt' si es lo que estás usando
+// o importación correcta si estás usando 'bcryptjs'
+// import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs'; // Esta es la importación correcta para bcryptjs
+import { Request } from 'express';
+import crypto from 'crypto';
+
 
 export class AuthUseCases implements AuthServicePort {
-  
   constructor(private readonly adminRepository: AdminRepositoryPort) {}
 
-  async login(credentials: LoginCredentialsDto): Promise<{ token: string } | null> {
-    
-    // --- INICIO DE LOGS DE DEPURACIÓN ---
-    console.log('--- Iniciando proceso de login ---');
-    console.log(`1. Intentando autenticar al usuario: "${credentials.username}"`);
-
-    const admin = await this.adminRepository.findByUsername(credentials.username);
-    
+  async login(username: string, password: string): Promise<string> {
+    const admin = await this.adminRepository.findByUsername(username);
     if (!admin) {
-      console.log('2. Resultado de la búsqueda: Usuario NO encontrado en la base de datos.');
-      console.log('--- Fin del proceso de login ---');
-      return null; // Usuario no encontrado.
+        throw new Error('Usuario no encontrado');
     }
 
-    console.log(`2. Resultado de la búsqueda: Usuario encontrado. ID: ${admin.id}`);
-    console.log(`3. Hash de la contraseña guardado en la BD: "${admin.password}"`);
-
-    const isPasswordValid = await bcrypt.compare(credentials.password, admin.password);
-    
-    console.log(`4. Resultado de bcrypt.compare: ${isPasswordValid}`);
-    
-    if (!isPasswordValid) {
-      console.log('5. Conclusión: La contraseña es INCORRECTA.');
-      console.log('--- Fin del proceso de login ---');
-      return null; // Contraseña incorrecta.
+    // AJUSTE: Llamada a la función `compare` directamente desde el módulo bcryptjs
+    const isValid = await bcrypt.compare(password, admin.password);
+    if (!isValid) {
+        throw new Error('Contraseña incorrecta');
     }
 
-    console.log('5. Conclusión: ¡La contraseña es CORRECTA!');
-    
-    const payload = { id: admin.id, username: admin.username };
-    const secret = process.env.JWT_SECRET || 'una-clave-secreta-por-defecto-muy-segura';
-    
-    const token = jwt.sign(payload, secret, {
-      expiresIn: '8h',
-    });
+    const secret = process.env.JWT_SECRET;
 
-    console.log('6. Token JWT generado exitosamente.');
-    console.log('--- Fin del proceso de login ---');
+    // Con esta estructura, el error es imposible que ocurra.
+    if (secret) {
+      const payload = {
+        id: String(admin.id), // Convierte a String para asegurar
+        username: String(admin.username) // Convierte a String para asegurar
+      };
 
-    return { token };
+      const token = sign(
+          payload,
+          secret,
+          { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+      );
+      return token;
+    } else {
+      throw new Error('JWT_SECRET no está definido');
+    }
   }
 
-  async registerAdmin(credentials: LoginCredentialsDto): Promise<Admin> {
-      const hashedPassword = await bcrypt.hash(credentials.password, 10);
-      const adminId = uuidv4();
-      const newAdmin = new Admin(adminId, credentials.username, hashedPassword);
-      return this.adminRepository.save(newAdmin);
+  verifyToken(token: string): any {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) throw new Error('JWT_SECRET no está definido');
+    // AJUSTE #3: Llama a 'verify' directamente
+    return verify(token, secret);
+  }
+
+  // ... el resto de tu clase no necesita cambios ...
+  getUserFromRequest(req: Request): any {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith('Bearer ')) throw new Error('Token no proporcionado');
+
+    const token = authHeader.split(' ')[1];
+    return this.verifyToken(token);
+  }
+
+ async register(adminData: { username: string; password: string }): Promise<Admin> {
+    // La función hash() de bcryptjs toma la contraseña y el número de saltRounds
+    // Esto asegura que la contraseña se hashee de forma segura.
+    const hashedPassword = await bcrypt.hash(adminData.password, 10);
+    const id = crypto.randomUUID();
+    
+    // Crea una nueva instancia de Admin con el hash de la contraseña
+    const newAdmin = new Admin(id, adminData.username, hashedPassword);
+    
+    // Guarda el nuevo usuario en el repositorio (base de datos)
+    return await this.adminRepository.save(newAdmin);
   }
 }
