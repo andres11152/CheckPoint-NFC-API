@@ -7,47 +7,54 @@ import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort.js';
 
 export class AuthUseCases implements AuthServicePort {
   
-  // El caso de uso depende del puerto del repositorio, que se inyecta.
   constructor(private readonly adminRepository: AdminRepositoryPort) {}
 
-  /**
-   * Procesa el login de un administrador.
-   */
   async login(credentials: LoginCredentialsDto): Promise<{ token: string } | null> {
-    // 1. Buscar al administrador por su nombre de usuario.
+    
+    // --- INICIO DE LOGS DE DEPURACIÓN ---
+    console.log('--- Iniciando proceso de login ---');
+    console.log(`1. Intentando autenticar al usuario: "${credentials.username}"`);
+
     const admin = await this.adminRepository.findByUsername(credentials.username);
+    
     if (!admin) {
+      console.log('2. Resultado de la búsqueda: Usuario NO encontrado en la base de datos.');
+      console.log('--- Fin del proceso de login ---');
       return null; // Usuario no encontrado.
     }
 
-    // 2. Comparar la contraseña enviada con el hash guardado en la base de datos.
+    console.log(`2. Resultado de la búsqueda: Usuario encontrado. ID: ${admin.id}`);
+    console.log(`3. Hash de la contraseña guardado en la BD: "${admin.password}"`);
+
     const isPasswordValid = await bcrypt.compare(credentials.password, admin.password);
+    
+    console.log(`4. Resultado de bcrypt.compare: ${isPasswordValid}`);
+    
     if (!isPasswordValid) {
+      console.log('5. Conclusión: La contraseña es INCORRECTA.');
+      console.log('--- Fin del proceso de login ---');
       return null; // Contraseña incorrecta.
     }
 
-    // 3. Si las credenciales son válidas, generar un JSON Web Token (JWT).
+    console.log('5. Conclusión: ¡La contraseña es CORRECTA!');
+    
     const payload = { id: admin.id, username: admin.username };
     const secret = process.env.JWT_SECRET || 'una-clave-secreta-por-defecto-muy-segura';
     
     const token = jwt.sign(payload, secret, {
-      expiresIn: '8h', // El token expirará en 8 horas.
+      expiresIn: '8h',
     });
+
+    console.log('6. Token JWT generado exitosamente.');
+    console.log('--- Fin del proceso de login ---');
 
     return { token };
   }
 
-  /**
-   * (Método extra) Registra un nuevo administrador. 
-   * Útil para un script de configuración inicial.
-   */
   async registerAdmin(credentials: LoginCredentialsDto): Promise<Admin> {
-      // Hashear la contraseña antes de guardarla.
       const hashedPassword = await bcrypt.hash(credentials.password, 10);
       const adminId = uuidv4();
-
       const newAdmin = new Admin(adminId, credentials.username, hashedPassword);
-      
       return this.adminRepository.save(newAdmin);
   }
 }
