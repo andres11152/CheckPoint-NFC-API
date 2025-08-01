@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AttendanceServicePort } from '../../../domain/ports/in/AttendanceServicePort.js';
+import { AttendanceServicePort } from '../../../domain/ports/in/AttendanceServicePort';
 
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceServicePort) {}

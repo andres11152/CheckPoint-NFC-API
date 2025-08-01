@@ -6,12 +6,12 @@ import 'reflect-metadata';
 // Importaciones necesarias
 import express, { Application } from 'express';
 import cors from 'cors';
-import { AppDataSource } from './infrastructure/config/data-source.js';
+import { AppDataSource } from './infrastructure/config/data-source';
 
 // Importa tus archivos de rutas
-import AuthRoutes from './infrastructure/api/routes/AuthRoutes.js';
-import StudentRoutes from './infrastructure/api/routes/StudentRoutes.js';
-import AttendanceRoutes from './infrastructure/api/routes/AttendanceRoutes.js';
+import AuthRoutes from './infrastructure/api/routes/AuthRoutes';
+import StudentRoutes from './infrastructure/api/routes/StudentRoutes';
+import AttendanceRoutes from './infrastructure/api/routes/AttendanceRoutes';
 
 /**
  * Función principal que arranca la aplicación.

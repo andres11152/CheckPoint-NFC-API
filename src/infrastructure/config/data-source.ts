@@ -3,9 +3,9 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 
 // Importa los esquemas de tus entidades
-import { AdminSchema } from '../persistence/entities/AdminSchema.js';
-import { StudentSchema } from '../persistence/entities/StudentSchema.js';
-import { AttendanceSchema } from '../persistence/entities/AttendanceSchema.js';
+import { AdminSchema } from '../persistence/entities/AdminSchema';
+import { StudentSchema } from '../persistence/entities/StudentSchema';
+import { AttendanceSchema } from '../persistence/entities/AttendanceSchema';
 
 // Configuración para la conexión a PostgreSQL con TypeORM
 export const AppDataSource = new DataSource({

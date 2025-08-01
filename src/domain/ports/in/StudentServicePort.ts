@@ -1,4 +1,4 @@
-import { Student } from '../../entities/Student.js';
+import { Student } from '../../entities/Student';
 
 // DTO (Data Transfer Object) para la creación de un estudiante.
 // Define los datos que se esperan desde el exterior.

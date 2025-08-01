@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Attendance, AttendanceType } from '../entities/Attendance.js';
-import { AttendanceHistoryFilters, AttendanceServicePort } from '../ports/in/AttendanceServicePort.js';
-import { AttendanceRepositoryPort } from '../ports/out/AttendanceRepositoryPort.js';
-import { StudentRepositoryPort } from '../ports/out/StudentRepositoryPort.js';
+import { Attendance, AttendanceType } from '../entities/Attendance';
+import { AttendanceHistoryFilters, AttendanceServicePort } from '../ports/in/AttendanceServicePort';
+import { AttendanceRepositoryPort } from '../ports/out/AttendanceRepositoryPort';
+import { StudentRepositoryPort } from '../ports/out/StudentRepositoryPort';
 import PDFDocument from 'pdfkit';
 import * as xlsx from 'xlsx';
 

@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { AppDataSource } from '../../config/data-source.js';
-import { authMiddleware } from '../middlewares/authMiddleware.js'; // 1. Importa el middleware
+import { AppDataSource } from '../../config/data-source';
+import { authMiddleware } from '../middlewares/authMiddleware'; // Middleware JWT
 
-// Importa las implementaciones que necesitas
-import { AttendanceTypeOrmRepository } from '../../persistence/repositories/AttendanceTypeOrmRepository.js';
-import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository.js';
-import { AttendanceUseCases } from '../../../domain/use-cases/AttendanceUseCases.js';
-import { AttendanceController } from '../controllers/AttendanceController.js';
+// Importa las implementaciones necesarias
+import { AttendanceTypeOrmRepository } from '../../persistence/repositories/AttendanceTypeOrmRepository';
+import { StudentTypeOrmRepository } from '../../persistence/repositories/StudentTypeOrmRepository';
+import { AttendanceUseCases } from '../../../domain/use-cases/AttendanceUseCases';
+import { AttendanceController } from '../controllers/AttendanceController';
 
 const router = Router();
 
@@ -18,12 +18,12 @@ const attendanceController = new AttendanceController(attendanceService);
 
 // --- Definición de las Rutas ---
 
-// Ruta PÚBLICA para el lector NFC
-router.post('/attendance', (req, res) => attendanceController.register(req, res));
+// Ruta PÚBLICA para el lector NFC (sin middleware)
+router.post('/', (req, res) => attendanceController.register(req, res));
 
 // Rutas PROTEGIDAS para el panel de administración
-router.get('/attendance/history', authMiddleware, (req, res) => attendanceController.getHistory(req, res));
-router.get('/attendance/export/pdf', authMiddleware, (req, res) => attendanceController.exportPdf(req, res));
-router.get('/attendance/export/excel', authMiddleware, (req, res) => attendanceController.exportExcel(req, res));
+router.get('/history', authMiddleware, (req, res) => attendanceController.getHistory(req, res));
+router.get('/export/pdf', authMiddleware, (req, res) => attendanceController.exportPdf(req, res));
+router.get('/export/excel', authMiddleware, (req, res) => attendanceController.exportExcel(req, res));
 
 export default router;

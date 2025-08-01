@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import { Admin } from '../../../domain/entities/Admin.js';
-import { AdminRepositoryPort } from '../../../domain/ports/out/AdminRepositoryPort.js';
-import { AdminSchema } from '../entities/AdminSchema.js';
+import { Admin } from '../../../domain/entities/Admin';
+import { AdminRepositoryPort } from '../../../domain/ports/out/AdminRepositoryPort';
+import { AdminSchema } from '../entities/AdminSchema';
 
 export class AdminTypeOrmRepository implements AdminRepositoryPort {
   private repository: Repository<Admin>;

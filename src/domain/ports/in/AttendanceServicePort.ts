@@ -1,4 +1,4 @@
-import { Attendance } from '../../entities/Attendance.js';
+import { Attendance } from '../../entities/Attendance';
 
 // DTO para los filtros del historial y reportes.
 export type AttendanceHistoryFilters = {

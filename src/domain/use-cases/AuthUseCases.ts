@@ -1,8 +1,8 @@
 // src/application/useCases/AuthUseCases.ts (o la ruta que sea)
 
-import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort.js';
-import { AuthServicePort } from '../ports/in/AuthServicePort.js';
-import { Admin } from '../entities/Admin.js';
+import { AdminRepositoryPort } from '../ports/out/AdminRepositoryPort';
+import { AuthServicePort } from '../ports/in/AuthServicePort';
+import { Admin } from '../entities/Admin';
 import jwt from 'jsonwebtoken';
 const { sign, verify } = jwt;
 // AJUSTE: Cambiado 'bcryptjs' por 'bcrypt' si es lo que estás usando

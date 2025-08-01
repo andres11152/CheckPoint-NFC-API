@@ -1,4 +1,4 @@
-import { Admin } from '../../entities/Admin.js';
+import { Admin } from '../../entities/Admin';
 
 export interface AdminRepositoryPort {
   /**

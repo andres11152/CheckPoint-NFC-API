@@ -2,12 +2,11 @@
   "name": "hexagonal---typescript",
   "version": "1.0.0",
   "description": "Proyecto con Arquitectura Hexagonal, Node.js, Express y TypeScript con PostgreSQL y TypeORM.",
-  "type": "module",
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon --watch src --ext ts --exec \"node --loader ts-node/esm\" src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "seed": "node --loader ts-node/esm seed.ts"
   },
   "keywords": [
@@ -53,6 +52,7 @@
     "nodemon": "^3.1.10",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   }
 }
