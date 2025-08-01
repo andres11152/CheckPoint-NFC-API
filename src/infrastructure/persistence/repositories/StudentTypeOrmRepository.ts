@@ -59,4 +59,6 @@ export class StudentTypeOrmRepository implements StudentRepositoryPort {
     const deleteResult = await this.repository.delete(id);
     return !!deleteResult.affected && deleteResult.affected > 0;
   }
+  
 }
+
