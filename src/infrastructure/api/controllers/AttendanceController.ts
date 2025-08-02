@@ -5,23 +5,28 @@ export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceServicePort) {}
 
   async register(req: Request, res: Response): Promise<void> {
-    try {
-      const { nfcId } = req.body;
-      if (!nfcId) {
-        res.status(400).json({ message: 'El nfcId es requerido.' });
-        return;
-      }
-      const attendance = await this.attendanceService.registerAttendance(nfcId);
-      res.status(201).json(attendance);
-    } catch (error: any) {
-      // Manejo de error específico si el estudiante no existe
-      if (error.message.includes('Estudiante no encontrado')) {
-          res.status(404).json({ message: error.message });
-          return;
-      }
-      res.status(500).json({ message: error.message });
+  try {
+    const { nfcId, studentId, status } = req.body;
+
+    // Validación: al menos uno debe venir
+    if (!nfcId && !studentId) {
+      res.status(400).json({ message: 'El nfcId o studentId es requerido.' });
+      return;
     }
+
+    // Llamar al caso de uso con un DTO que soporte ambos
+    const attendance = await this.attendanceService.registerAttendance({ nfcId, studentId, status });
+
+    res.status(201).json(attendance);
+  } catch (error: any) {
+    if (error.message.includes('Estudiante no encontrado')) {
+      res.status(404).json({ message: error.message });
+      return;
+    }
+    res.status(500).json({ message: error.message });
   }
+}
+
 
   async getHistory(req: Request, res: Response): Promise<void> {
     try {

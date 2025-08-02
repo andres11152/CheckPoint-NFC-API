@@ -44,10 +44,12 @@ export class StudentTypeOrmRepository implements StudentRepositoryPort {
     return this.toDomain(plainStudent); // Se retorna una instancia de la clase
   }
 
-  async findByNfcId(nfcId: string): Promise<Student | null> {
-    const plainStudent = await this.repository.findOne({ where: { nfcId } });
-    return this.toDomain(plainStudent); // Se retorna una instancia de la clase
-  }
+    async findByNfcId(nfcId: string): Promise<Student | null> {
+      console.log('Buscando por nfcId:', `"${nfcId}"`);
+      const plainStudent = await this.repository.findOne({ where: { nfcId } });
+      return this.toDomain(plainStudent);
+    }
+
 
   async findAll(): Promise<Student[]> {
     const plainStudents = await this.repository.find();

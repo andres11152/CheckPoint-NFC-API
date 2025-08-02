@@ -12,59 +12,59 @@ export class AttendanceUseCases implements AttendanceServicePort {
     private readonly studentRepository: StudentRepositoryPort
   ) {}
 
-  async registerAttendance(nfcId: string): Promise<Attendance> {
-    const student = await this.studentRepository.findByNfcId(nfcId);
-    if (!student) {
-      throw new Error('Estudiante no encontrado con ese tag NFC.');
+  async registerAttendance(data: { nfcId?: string; studentId?: string }): Promise<Attendance> {
+    let studentId = data.studentId;
+
+    if (!studentId && data.nfcId) {
+      const student = await this.studentRepository.findByNfcId(data.nfcId);
+      if (!student) {
+        throw new Error('Estudiante no encontrado con ese tag NFC.');
+      }
+      studentId = student.id;
     }
 
-    const lastAttendance = await this.attendanceRepository.findLastByStudentId(
-      student.id
-    );
+    if (!studentId) {
+      throw new Error('studentId o nfcId son requeridos.');
+    }
+
+    const student = await this.studentRepository.findById(studentId);
+    if (!student) {
+      throw new Error('Estudiante no encontrado.');
+    }
+
+    const lastAttendance = await this.attendanceRepository.findLastByStudentId(student.id);
     const newAttendanceType =
       !lastAttendance || lastAttendance.type === AttendanceType.EXIT
         ? AttendanceType.ENTRY
         : AttendanceType.EXIT;
 
-    const newAttendance = new Attendance(
-      uuidv4(),
-      student,
-      newAttendanceType
-    );
+    const newAttendance = new Attendance(uuidv4(), student, newAttendanceType);
 
     return this.attendanceRepository.save(newAttendance);
   }
 
-  async getAttendanceHistory(
-    filters: AttendanceHistoryFilters
-  ): Promise<Attendance[]> {
+  async getAttendanceHistory(filters: AttendanceHistoryFilters): Promise<Attendance[]> {
     return this.attendanceRepository.find(filters);
   }
 
-  async exportHistoryToExcel(
-  filters: AttendanceHistoryFilters
-): Promise<Buffer> {
-  const records = await this.getAttendanceHistory(filters);
+  async exportHistoryToExcel(filters: AttendanceHistoryFilters): Promise<Buffer> {
+    const records = await this.getAttendanceHistory(filters);
 
-  const formattedData = records.map(record => ({
-    'Estudiante': record.student ? `${record.student.name} ${record.student.lastName}` : 'Desconocido',
-    'Fecha y Hora': new Date(record.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
-    'Tipo': record.type === 'entry' ? 'Entrada' : 'Salida',
-  }));
+    const formattedData = records.map(record => ({
+      'Estudiante': record.student ? `${record.student.name} ${record.student.lastName}` : 'Desconocido',
+      'Fecha y Hora': new Date(record.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }),
+      'Tipo': record.type === 'entry' ? 'Entrada' : 'Salida',
+    }));
 
-  const worksheet = xlsx.utils.json_to_sheet(formattedData);
-  const workbook = xlsx.utils.book_new();
-  xlsx.utils.book_append_sheet(workbook, worksheet, 'Asistencias');
+    const worksheet = xlsx.utils.json_to_sheet(formattedData);
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, 'Asistencias');
 
-  // --- AJUSTE CLAVE AQUÍ ---
-  // Cambiamos la forma en que se genera el buffer para mayor compatibilidad
-  const workbookOutput = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-  return Buffer.from(workbookOutput);
-}
+    const workbookOutput = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
+    return Buffer.from(workbookOutput);
+  }
 
-  async exportHistoryToPdf(
-    filters: AttendanceHistoryFilters
-  ): Promise<Buffer> {
+  async exportHistoryToPdf(filters: AttendanceHistoryFilters): Promise<Buffer> {
     const records = await this.getAttendanceHistory(filters);
     const doc = new PDFDocument();
 

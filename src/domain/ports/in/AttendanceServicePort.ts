@@ -13,7 +13,11 @@ export interface AttendanceServicePort {
    * @param nfcId - El ID del tag NFC leído.
    * @returns El registro de asistencia creado.
    */
-  registerAttendance(nfcId: string): Promise<Attendance>;
+    registerAttendance(input: {
+        nfcId?: string;
+        studentId?: string;
+        status?: string;
+      }): Promise<Attendance>;
 
   /**
    * Obtiene el historial de asistencias con filtros opcionales.
