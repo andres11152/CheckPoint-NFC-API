@@ -73,4 +73,26 @@ export class StudentController {
         res.status(500).json({ message: error.message });
     }
   }
+  
+  async findByNfcId(req: Request, res: Response): Promise<void> {
+  try {
+    const { nfcId } = req.body;
+
+    if (!nfcId) {
+      res.status(400).json({ message: 'Falta el campo nfcId.' });
+      return;
+    }
+
+    const student = await this.studentService.findByNfcId(nfcId);
+    if (student) {
+      res.status(200).json(student);
+    } else {
+      res.status(404).json({ message: 'Estudiante no encontrado.' });
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message || 'Error interno del servidor.' });
+  }
+}
+
 }

@@ -1,3 +1,4 @@
+// import { Student } from '../../entities/Student';
 import { Student } from '../../entities/Student';
 
 // DTO (Data Transfer Object) para la creación de un estudiante.
@@ -24,14 +25,14 @@ export interface StudentServicePort {
    * @returns Un arreglo de todos los estudiantes.
    */
   getAllStudents(): Promise<Student[]>;
-  
+
   /**
    * Busca un estudiante por su ID.
    * @param id - El ID del estudiante a buscar.
    * @returns El estudiante encontrado o null si no existe.
    */
   findStudentById(id: string): Promise<Student | null>;
-  
+
   /**
    * Actualiza los datos de un estudiante.
    * @param id - El ID del estudiante a actualizar.
@@ -53,4 +54,11 @@ export interface StudentServicePort {
    * @returns Un objeto con el resultado de la operación.
    */
   importStudentsFromExcel(fileBuffer: Buffer): Promise<{ success: boolean; message: string; }>;
+
+  /**
+   * Busca un estudiante por su ID NFC.
+   * @param nfcId - El ID NFC del estudiante.
+   * @returns El estudiante encontrado o null si no existe.
+   */
+  findByNfcId(nfcId: string): Promise<Student | null>;
 }

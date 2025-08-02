@@ -23,6 +23,7 @@ router.get('/', (req, res) => studentController.getAllStudents(req, res));
 router.get('/:id', (req, res) => studentController.getStudentById(req, res));
 router.put('/:id', (req, res) => studentController.updateStudent(req, res));
 router.delete('/:id', (req, res) => studentController.deleteStudent(req, res));
+router.post('/nfc', (req, res) => studentController.findByNfcId(req, res));
 
 // Ruta para importación de archivo Excel
 router.post('/import', upload.single('file'), (req, res) => studentController.importStudents(req, res));

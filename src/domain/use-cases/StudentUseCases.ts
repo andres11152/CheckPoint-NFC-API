@@ -43,6 +43,10 @@ export class StudentUseCases implements StudentServicePort {
   async deleteStudent(id: string): Promise<boolean> {
     return this.studentRepository.deleteById(id);
   }
+  async findByNfcId(nfcId: string): Promise<Student | null> {
+  return this.studentRepository.findByNfcId(nfcId);
+}
+
 
   async importStudentsFromExcel(fileBuffer: Buffer): Promise<{ success: boolean; message: string; }> {
     const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
