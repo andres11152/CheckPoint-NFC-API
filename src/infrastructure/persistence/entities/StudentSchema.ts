@@ -1,10 +1,10 @@
 // src/infrastructure/persistence/entities/StudentSchema.ts
 import { EntitySchema } from 'typeorm';
-import { Student } from '../../../domain/entities/Student'; // <-- Importas la entidad de dominio
+import { Student } from '../../../domain/entities/Student';
 
 export const StudentSchema = new EntitySchema<Student>({
-  name: 'Student', // El nombre de la clase de dominio
-  tableName: 'students', // El nombre de la tabla en la base de datos
+  name: 'Student',
+  tableName: 'students',
   columns: {
     id: {
       type: 'uuid',
@@ -15,14 +15,17 @@ export const StudentSchema = new EntitySchema<Student>({
     },
     lastName: {
       type: 'varchar',
+      name: 'last_name', // ← opcional si tu columna es snake_case
     },
     nfcId: {
       type: 'varchar',
-      unique: true, // El nfcId debe ser único
+      unique: true,
+      name: 'nfc_id', // ← necesario si en tu BD está como "nfc_id"
     },
     createdAt: {
       type: 'timestamp',
       createDate: true,
+      name: 'created_at',
     },
   },
 });
