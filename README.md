@@ -1,132 +1,179 @@
-# 🏫 NFC Attendance API
+NFC Attendance API
+A robust backend API for managing student attendance via NFC technology. Built with Node.js, Express, TypeScript, and TypeORM, this project enables schools or organizations to manage students, register attendance via NFC cards, and perform bulk student imports from Excel files. The API is secure, supports JWT authentication, and is production-ready (deployed on Render).
 
-RESTful API for student management and attendance tracking using NFC cards. Built with Node.js, Express, PostgreSQL, and a hexagonal architecture for scalability and maintainability. Includes JWT authentication, bulk import via Excel, attendance history, and complete Swagger documentation.
+🚀 Features
+User Authentication: Secure JWT-based login and user info retrieval.
 
----
+Student Management: CRUD operations for students, including NFC card management.
 
-## 🚀 Features
+Attendance Registration: Register attendance via NFC or manually.
 
-- **Student Management:** Create, read, update, and delete students. Find by NFC ID.
-- **Attendance Registration:** Register entries and exits, link with NFC cards.
-- **Bulk Import:** Upload Excel or CSV files to create multiple students at once.
-- **Authentication:** Secure endpoints with JWT-based login.
-- **Swagger Documentation:** All endpoints fully documented and testable via Swagger UI.
-- **Hexagonal Architecture:** Clear separation between domain, application, and infrastructure.
-- **PostgreSQL Database:** Relational model, migration-ready.
-- **Ready for Deploy:** Render (API), Clever Cloud (Database), AWS S3 (for file storage if needed).
-- **Advanced Error Handling:** Consistent, clear error responses.
-- **CORS:** Configurable for modern frontend consumption (React, Vue, etc).
+Bulk Import: Import students in bulk from Excel/CSV.
 
----
+Export: Export attendance history to PDF or Excel.
 
-## 🧱 Tech Stack
+Role-based Access: Protected endpoints for admin actions.
 
-- **Node.js** + **Express.js**
-- **PostgreSQL**
-- **JWT** for authentication
-- **Swagger** (swagger-ui-express)
-- **CORS** and advanced middleware
-- **ExcelJS/xlsx** for Excel import/export
-- **Deployment:** Render, Clever Cloud, AWS S3 (optional)
-- **Hexagonal Architecture (ports & adapters)**
+TypeORM + PostgreSQL: Clean and scalable database integration.
 
----
+🗂️ Project Structure
+bash
+Copiar
+Editar
+src/
+  |- application/         # Use cases & service logic
+  |- core/                # Domain models & interfaces
+  |- infrastructure/
+      |- api/             # Express routes, controllers, middlewares
+      |- config/          # TypeORM & app config
+      |- persistence/     # TypeORM repositories
+  |- index.ts             # App entry point (Express setup)
+🌐 API Endpoints
+Auth (/api/auth)
+POST /login
+Authenticate and obtain JWT token.
 
-## 📦 Getting Started
+GET /me
+Get current user info (requires JWT).
 
-1. **Clone the repository:**
+Students (/api/students)
+All require Authorization: Bearer <token>
 
-   ```bash
-   git clone https://github.com/your-username/nfc-attendance-api.git
-   cd nfc-attendance-api
-Install dependencies:
+POST /
+Create a student.
 
+GET /
+List all students.
+
+GET /:id
+Get student by ID.
+
+PUT /:id
+Update student.
+
+DELETE /:id
+Delete student.
+
+POST /nfc
+Find by NFC ID.
+
+POST /import
+Bulk import students (file upload).
+
+Attendance (/api/attendance)
+POST /
+Register attendance by NFC ID (public endpoint, no JWT required).
+
+GET /history
+Get attendance records (admin only).
+
+GET /export/pdf
+Export history as PDF (admin only).
+
+GET /export/excel
+Export history as Excel (admin only).
+
+🔐 Authentication
+Login via /api/auth/login (POST)
+Returns a JWT token.
+
+Protected endpoints require Authorization: Bearer <token> in headers.
+
+🏃‍♂️ Quick Start
+1. Clone the repository
+bash
+Copiar
+Editar
+git clone https://github.com/your-username/nfc-attendance-api.git
+cd nfc-attendance-api
+2. Install dependencies
 bash
 Copiar
 Editar
 npm install
-# or
-yarn install
-Configure environment variables:
-Create a .env file in the root directory with the following content (adapt to your environment):
+3. Configure environment variables
+Create a .env file in the root:
 
-env
+ini
 Copiar
 Editar
-PORT=4000
+PORT=3000
 DATABASE_URL=postgres://user:password@host:port/dbname
-JWT_SECRET=supersecretkey
-CORS_ORIGINS=https://yourfrontend.com,https://localhost:5173
-Run migrations and seeds (if applicable):
-
+JWT_SECRET=your_jwt_secret
+4. Run database migrations (if needed)
 bash
 Copiar
 Editar
-# Adjust to your ORM/migration tool
-npm run migrate
-npm run seed
-Start the server:
-
+npm run typeorm migration:run
+5. Start the server
 bash
 Copiar
 Editar
-npm run dev
-# or
-yarn dev
-The API will be available at http://localhost:4000 (or your chosen port).
+npm run dev    # for development (nodemon)
+npm run build  # build for production
+npm start      # run in production
+🧪 Example Usage
+Login
 
-📚 API Documentation
-Once the server is running, visit:
-
-bash
+http
 Copiar
 Editar
-http://localhost:4000/api/docs
-You’ll find interactive Swagger documentation for all endpoints, including authentication, student management, attendance, and bulk import.
+POST /api/auth/login
+{
+  "username": "admin",
+  "password": "admin123"
+}
+Response:
 
-🚦 Example Endpoints
-POST /api/auth/login – Login, receive JWT token
-
-GET /api/students – List all students (requires JWT)
-
-POST /api/students – Create student (requires JWT)
-
-POST /api/students/import – Bulk import students via Excel/CSV (requires JWT)
-
-POST /api/attendance – Register attendance by student (requires JWT)
-
-GET /api/attendance – List attendance records (requires JWT)
-
-🔒 Security
-All sensitive endpoints require a valid JWT token in the Authorization: Bearer <token> header.
-
-CORS origins are configurable in your .env file.
-
-Never expose your JWT_SECRET or database credentials.
-
-🛠️ Contributing
-Contributions, issues, and feature requests are welcome!
-
-Fork the repo
-
-Create your branch (git checkout -b feature/foo)
-
-Commit your changes
-
-Push to your branch
-
-Open a Pull Request
-
-📝 License
-This project is MIT licensed.
-
-Developed by Andrés Betancourt
-Contact: andres.betancourt@skycode.agency
-
-yaml
+json
 Copiar
 Editar
+{ "token": "..." }
+Import students from Excel/CSV
 
----
+Endpoint: POST /api/students/import
 
-Let me know if you want a shorter version or specific examples!
+Content-Type: multipart/form-data
+
+Field: file
+
+📦 Deployment
+Production-ready: Render or your preferred Node.js cloud provider.
+
+Uses environment variables for all secrets.
+
+Connects to PostgreSQL (can adapt to MySQL, etc. with TypeORM).
+
+⚙️ Tech Stack
+Node.js, Express.js
+
+TypeScript
+
+TypeORM
+
+PostgreSQL
+
+Multer (file upload)
+
+JWT (auth)
+
+ExcelJS (Excel parsing)
+
+PDFKit (PDF export)
+
+Modern folder structure (Clean/Hexagonal/DDD)
+
+👤 Author
+Andrés Betancourt
+
+LinkedIn
+
+GitHub
+
+📄 License
+MIT
+
+⭐ Want to contribute?
+Pull requests are welcome! Please open issues or discussions for bugs or suggestions.
+
+Let me know if you want a Spanish version or to add specific setup/usage notes! 🚀
