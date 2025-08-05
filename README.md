@@ -1,179 +1,107 @@
-NFC Attendance API
-A robust backend API for managing student attendance via NFC technology. Built with Node.js, Express, TypeScript, and TypeORM, this project enables schools or organizations to manage students, register attendance via NFC cards, and perform bulk student imports from Excel files. The API is secure, supports JWT authentication, and is production-ready (deployed on Render).
+# NFC Attendance API
 
-🚀 Features
-User Authentication: Secure JWT-based login and user info retrieval.
+NFC Attendance API is a secure REST API for managing student attendance via NFC, featuring authentication, bulk import, and easy data export.
 
-Student Management: CRUD operations for students, including NFC card management.
+## Features
 
-Attendance Registration: Register attendance via NFC or manually.
+- 🔒 JWT Authentication for admin endpoints
+- 🏷️ Register student attendance via NFC (public endpoint)
+- 👨‍🎓 CRUD for students (create, update, delete, search by NFC ID)
+- 📥 Bulk import of students via Excel files
+- 📊 Attendance history and export to PDF/Excel
+- 🛡️ TypeORM + Express.js + Clean Architecture
+- 📝 Well-organized, scalable project structure
 
-Bulk Import: Import students in bulk from Excel/CSV.
+## Technologies
 
-Export: Export attendance history to PDF or Excel.
+- Node.js / Express.js
+- TypeScript
+- TypeORM
+- PostgreSQL (or compatible database)
+- JWT Authentication
+- Multer (file upload)
+- ExcelJS
 
-Role-based Access: Protected endpoints for admin actions.
+## API Endpoints
 
-TypeORM + PostgreSQL: Clean and scalable database integration.
+### Authentication
 
-🗂️ Project Structure
-bash
-Copiar
-Editar
+- `POST /api/auth/login` — Login with credentials (returns JWT)
+- `GET /api/auth/me` — Get current authenticated user (protected)
+
+### Students
+
+All endpoints below require JWT in the `Authorization` header.
+
+- `POST /api/students` — Create student
+- `GET /api/students` — List students
+- `GET /api/students/:id` — Get student by ID
+- `PUT /api/students/:id` — Update student
+- `DELETE /api/students/:id` — Delete student
+- `POST /api/students/nfc` — Find student by NFC ID
+- `POST /api/students/import` — Bulk import students (Excel file, field: `file`)
+
+### Attendance
+
+- `POST /api/attendance` — Register attendance by NFC (public, expects `{ nfcId }`)
+- `GET /api/attendance/history` — List attendance records (protected)
+- `GET /api/attendance/export/pdf` — Export attendance to PDF (protected)
+- `GET /api/attendance/export/excel` — Export attendance to Excel (protected)
+
+## Setup
+
+1. **Clone the repo**
+    ```bash
+    git clone https://github.com/youruser/nfc-attendance-api.git
+    cd nfc-attendance-api
+    ```
+
+2. **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3. **Create a `.env` file**
+    ```ini
+    PORT=3000
+    DATABASE_URL=your_postgres_url
+    JWT_SECRET=your_super_secret_key
+    ```
+
+4. **Run migrations & start the server**
+    ```bash
+    npm run typeorm migration:run
+    npm run dev
+    ```
+
+## Deployment
+
+This API is production-ready and deployable to platforms like [Render.com](https://render.com/) or [Vercel](https://vercel.com/).
+
+## Folder Structure
+
 src/
-  |- application/         # Use cases & service logic
-  |- core/                # Domain models & interfaces
-  |- infrastructure/
-      |- api/             # Express routes, controllers, middlewares
-      |- config/          # TypeORM & app config
-      |- persistence/     # TypeORM repositories
-  |- index.ts             # App entry point (Express setup)
-🌐 API Endpoints
-Auth (/api/auth)
-POST /login
-Authenticate and obtain JWT token.
+application/
+core/
+domain/
+infrastructure/
+persistence/
+...
 
-GET /me
-Get current user info (requires JWT).
-
-Students (/api/students)
-All require Authorization: Bearer <token>
-
-POST /
-Create a student.
-
-GET /
-List all students.
-
-GET /:id
-Get student by ID.
-
-PUT /:id
-Update student.
-
-DELETE /:id
-Delete student.
-
-POST /nfc
-Find by NFC ID.
-
-POST /import
-Bulk import students (file upload).
-
-Attendance (/api/attendance)
-POST /
-Register attendance by NFC ID (public endpoint, no JWT required).
-
-GET /history
-Get attendance records (admin only).
-
-GET /export/pdf
-Export history as PDF (admin only).
-
-GET /export/excel
-Export history as Excel (admin only).
-
-🔐 Authentication
-Login via /api/auth/login (POST)
-Returns a JWT token.
-
-Protected endpoints require Authorization: Bearer <token> in headers.
-
-🏃‍♂️ Quick Start
-1. Clone the repository
-bash
+yaml
 Copiar
 Editar
-git clone https://github.com/your-username/nfc-attendance-api.git
-cd nfc-attendance-api
-2. Install dependencies
-bash
-Copiar
-Editar
-npm install
-3. Configure environment variables
-Create a .env file in the root:
 
-ini
-Copiar
-Editar
-PORT=3000
-DATABASE_URL=postgres://user:password@host:port/dbname
-JWT_SECRET=your_jwt_secret
-4. Run database migrations (if needed)
-bash
-Copiar
-Editar
-npm run typeorm migration:run
-5. Start the server
-bash
-Copiar
-Editar
-npm run dev    # for development (nodemon)
-npm run build  # build for production
-npm start      # run in production
-🧪 Example Usage
-Login
+## Security
 
-http
-Copiar
-Editar
-POST /api/auth/login
-{
-  "username": "admin",
-  "password": "admin123"
-}
-Response:
+- All admin endpoints require a valid JWT.
+- Passwords are hashed.
+- CORS configured for secure origins.
 
-json
-Copiar
-Editar
-{ "token": "..." }
-Import students from Excel/CSV
+## License
 
-Endpoint: POST /api/students/import
-
-Content-Type: multipart/form-data
-
-Field: file
-
-📦 Deployment
-Production-ready: Render or your preferred Node.js cloud provider.
-
-Uses environment variables for all secrets.
-
-Connects to PostgreSQL (can adapt to MySQL, etc. with TypeORM).
-
-⚙️ Tech Stack
-Node.js, Express.js
-
-TypeScript
-
-TypeORM
-
-PostgreSQL
-
-Multer (file upload)
-
-JWT (auth)
-
-ExcelJS (Excel parsing)
-
-PDFKit (PDF export)
-
-Modern folder structure (Clean/Hexagonal/DDD)
-
-👤 Author
-Andrés Betancourt
-
-LinkedIn
-
-GitHub
-
-📄 License
 MIT
 
-⭐ Want to contribute?
-Pull requests are welcome! Please open issues or discussions for bugs or suggestions.
+---
 
-Let me know if you want a Spanish version or to add specific setup/usage notes! 🚀
+Developed by Andrés Betancourt.
