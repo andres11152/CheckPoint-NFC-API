@@ -64,8 +64,16 @@ All endpoints below require JWT in the `Authorization` header.
 3. **Create a `.env` file**
     ```ini
     PORT=3000
-    DATABASE_URL=your_postgres_url
-    JWT_SECRET=your_super_secret_key
+    
+    DB_HOST=
+    DB_PORT=
+    DB_USER=
+    DB_PASSWORD=
+    DB_NAME=
+    
+    JWT_EXPIRES_IN=1h
+    JWT_SECRET=
+
     ```
 
 4. **Run migrations & start the server**
