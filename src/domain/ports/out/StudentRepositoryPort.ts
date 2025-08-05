@@ -1,4 +1,5 @@
 import { Student } from '../../entities/Student';
+import { CreateStudentDto } from '../../../domain/ports/in/StudentServicePort';
 
 export interface StudentRepositoryPort {
   /**
@@ -41,4 +42,7 @@ export interface StudentRepositoryPort {
    * @returns `true` si se eliminó, `false` si no.
    */
   deleteById(id: string): Promise<boolean>;
+
+  bulkCreate(students: CreateStudentDto[]): Promise<void>;  
+
 }

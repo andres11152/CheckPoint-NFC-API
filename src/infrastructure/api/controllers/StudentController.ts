@@ -67,9 +67,11 @@ export class StudentController {
             res.status(400).json({ message: 'No se ha subido ningún archivo.' });
             return;
         }
+        console.log('Archivo recibido por Multer:', req.file); // 👈 AGREGA ESTO
         const result = await this.studentService.importStudentsFromExcel(req.file.buffer);
         res.status(200).json(result);
     } catch (error: any) {
+      console.error('Error importando estudiantes:', error); // 👈 Y ESTO
         res.status(500).json({ message: error.message });
     }
   }

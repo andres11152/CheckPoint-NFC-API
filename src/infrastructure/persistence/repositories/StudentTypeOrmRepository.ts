@@ -1,7 +1,9 @@
-import { DataSource, Repository } from 'typeorm';
-import { Student } from '../../../domain/entities/Student';
-import { StudentRepositoryPort } from '../../../domain/ports/out/StudentRepositoryPort';
-import { StudentSchema } from '../entities/StudentSchema';
+import { DataSource, Repository } from "typeorm";
+import { Student } from "../../../domain/entities/Student";
+import { StudentRepositoryPort } from "../../../domain/ports/out/StudentRepositoryPort";
+import { StudentSchema } from "../entities/StudentSchema";
+import { CreateStudentDto } from '../../../domain/ports/in/StudentServicePort';
+import { v4 as uuidv4 } from 'uuid';
 
 export class StudentTypeOrmRepository implements StudentRepositoryPort {
   private repository: Repository<Student>;
@@ -10,10 +12,6 @@ export class StudentTypeOrmRepository implements StudentRepositoryPort {
     this.repository = dataSource.getRepository(StudentSchema);
   }
 
-  /**
-   * Mapeador para convertir un objeto simple de la base de datos
-   * en una instancia de la clase de dominio `Student`.
-   */
   private toDomain(plainStudent: Student | null): Student | null {
     if (!plainStudent) {
       return null;
@@ -24,43 +22,56 @@ export class StudentTypeOrmRepository implements StudentRepositoryPort {
       plainStudent.lastName,
       plainStudent.nfcId
     );
-    // Se preserva la fecha de creación original de la base de datos
-    (student as any).createdAt = plainStudent.createdAt; 
+    (student as any).createdAt = plainStudent.createdAt;
     return student;
   }
 
   async save(student: Student): Promise<Student> {
     const savedStudent = await this.repository.save(student);
-    return this.toDomain(savedStudent)!; // Se retorna una instancia de la clase
+    return this.toDomain(savedStudent)!;
   }
 
   async update(student: Student): Promise<Student> {
     const updatedStudent = await this.repository.save(student);
-    return this.toDomain(updatedStudent)!; // Se retorna una instancia de la clase
+    return this.toDomain(updatedStudent)!;
   }
 
   async findById(id: string): Promise<Student | null> {
     const plainStudent = await this.repository.findOne({ where: { id } });
-    return this.toDomain(plainStudent); // Se retorna una instancia de la clase
+    return this.toDomain(plainStudent);
   }
 
-    async findByNfcId(nfcId: string): Promise<Student | null> {
-      console.log('Buscando por nfcId:', `"${nfcId}"`);
-      const plainStudent = await this.repository.findOne({ where: { nfcId } });
-      return this.toDomain(plainStudent);
-    }
-
+  async findByNfcId(nfcId: string): Promise<Student | null> {
+    console.log("Buscando por nfcId:", `"${nfcId}"`);
+    const plainStudent = await this.repository.findOne({ where: { nfcId } });
+    return this.toDomain(plainStudent);
+  }
 
   async findAll(): Promise<Student[]> {
     const plainStudents = await this.repository.find();
-    // Se convierte cada objeto del arreglo en una instancia de la clase
-    return plainStudents.map(student => this.toDomain(student)!);
+    return plainStudents.map((student) => this.toDomain(student)!);
   }
 
   async deleteById(id: string): Promise<boolean> {
     const deleteResult = await this.repository.delete(id);
     return !!deleteResult.affected && deleteResult.affected > 0;
   }
-  
-}
 
+  // ✅ BULK CREATE - AJUSTE SEGURO
+  async bulkCreate(students: CreateStudentDto[]): Promise<void> {
+    const studentEntities = students.map(dto => ({
+      id: uuidv4(), // Generar uuid manualmente por cada estudiante
+      name: dto.name,
+      lastName: dto.lastName,
+      nfcId: dto.nfcId,
+      createdAt: new Date()
+    }));
+
+    await this.repository
+      .createQueryBuilder()
+      .insert()
+      .into(StudentSchema)
+      .values(studentEntities)
+      .execute();
+  }
+}

@@ -48,29 +48,36 @@ export class StudentUseCases implements StudentServicePort {
 }
 
 
-  async importStudentsFromExcel(fileBuffer: Buffer): Promise<{ success: boolean; message: string; }> {
-    const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const data = xlsx.utils.sheet_to_json<{ Nombre: string; Apellido: string; ID_NFC: string }>(worksheet);
+    async importStudentsFromExcel(fileBuffer: Buffer): Promise<{ success: boolean; message: string; }> {
+      const workbook = xlsx.read(fileBuffer, { type: 'buffer' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const data = xlsx.utils.sheet_to_json<Record<string, any>>(worksheet);
 
-    try {
+      // Construye todos los estudiantes a crear
+      const studentsToCreate: CreateStudentDto[] = [];
+
       for (const row of data) {
-        if (!row.Nombre || !row.Apellido || !row.ID_NFC) {
-          console.warn('Fila inválida en Excel, omitiendo:', row);
-          continue;
-        }
-        const studentDto: CreateStudentDto = {
-          name: row.Nombre,
-          lastName: row.Apellido,
-          nfcId: String(row.ID_NFC),
-        };
-        await this.createStudent(studentDto);
+        const name = row.Nombre || row.name;
+        const lastName = row.Apellido || row.lastName;
+        const nfcId = row.ID_NFC || row.nfcId;
+        if (!name || !lastName || !nfcId) continue;
+        studentsToCreate.push({
+          name: String(name),
+          lastName: String(lastName),
+          nfcId: String(nfcId),
+        });
       }
-      return { success: true, message: 'Estudiantes importados correctamente.' };
-    } catch (error) {
-      console.error(error);
-      return { success: false, message: 'Error durante la importación.' };
+
+      try {
+        // ⚡️ Nuevo: bulk create (método que veremos abajo)
+        await this.studentRepository.bulkCreate(studentsToCreate);
+        return { success: true, message: 'Estudiantes importados correctamente.' };
+      } catch (error) {
+         console.error('ERROR importando estudiantes:', error); // <- Deja este log
+        return { success: false, message: 'Error durante la importación.' };
+      }
     }
-  }
+
+
 }

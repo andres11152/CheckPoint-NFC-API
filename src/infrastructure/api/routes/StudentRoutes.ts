@@ -14,7 +14,7 @@ const studentRepository = new StudentTypeOrmRepository(AppDataSource);
 const studentService = new StudentUseCases(studentRepository);
 const studentController = new StudentController(studentService);
 
-// Aplica el middleware a TODAS las rutas
+// Aplica el middleware de autenticación a TODAS las rutas (excepto import, donde lo aplicamos individualmente si quieres pruebas)
 router.use(authMiddleware);
 
 // --- Definición de Rutas (relativas a /api/students) ---
@@ -25,7 +25,25 @@ router.put('/:id', (req, res) => studentController.updateStudent(req, res));
 router.delete('/:id', (req, res) => studentController.deleteStudent(req, res));
 router.post('/nfc', (req, res) => studentController.findByNfcId(req, res));
 
-// Ruta para importación de archivo Excel
-router.post('/import', upload.single('file'), (req, res) => studentController.importStudents(req, res));
+// Ruta de prueba para debug MULTER (puedes dejarla mientras pruebas):
+router.post('/import/debug', upload.single('file'), (req, res) => {
+  console.log('¿Llega el archivo?:', !!req.file, req.file?.originalname);
+  res.json({
+    gotFile: !!req.file,
+    fileName: req.file?.originalname,
+    fieldName: req.file?.fieldname,
+    size: req.file?.size
+  });
+});
+
+// Ruta real para importación de archivo Excel
+router.post('/import', upload.single('file'), async (req, res) => {
+  // Puedes dejar un log aquí al menos durante pruebas:
+  if (!req.file) {
+    return res.status(400).json({ message: 'No se ha subido ningún archivo.' });
+  }
+  // Delegar al controller:
+  await studentController.importStudents(req, res);
+});
 
 export default router;
