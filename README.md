@@ -89,67 +89,67 @@ Production-ready. You can deploy on [Render.com](https://render.com/), [Vercel](
 
 ## Folder Structure
 
-server/
-│
-├── src/
-│ │
-│ ├── domain/
-│ │ ├── entities/
-│ │ │ ├── Admin.ts
-│ │ │ ├── Attendance.ts
-│ │ │ └── Student.ts
-│ │ │
-│ │ ├── ports/
-│ │ │ ├── in/
-│ │ │ │ ├── AttendanceServicePort.ts
-│ │ │ │ ├── AuthServicePort.ts
-│ │ │ │ └── StudentServicePort.ts
-│ │ │ │
-│ │ │ └── out/
-│ │ │ ├── AdminRepositoryPort.ts
-│ │ │ ├── AttendanceRepositoryPort.ts
-│ │ │ └── StudentRepositoryPort.ts
-│ │ │
-│ │ └── use-cases/
-│ │ ├── AttendanceUseCases.ts
-│ │ ├── AuthUseCases.ts
-│ │ └── StudentUseCases.ts
-│ │
-│ ├── infrastructure/
-│ │ ├── api/
-│ │ │ ├── controllers/
-│ │ │ │ ├── AttendanceController.ts
-│ │ │ │ ├── AuthController.ts
-│ │ │ │ └── StudentController.ts
-│ │ │ │
-│ │ │ ├── middlewares/
-│ │ │ │ └── authMiddleware.ts
-│ │ │ │
-│ │ │ └── routes/
-│ │ │ ├── AttendanceRoutes.ts
-│ │ │ ├── AuthRoutes.ts
-│ │ │ └── StudentRoutes.ts
-│ │ │
-│ │ ├── config/
-│ │ │ └── data-source.ts
-│ │ │
-│ │ └── persistence/
-│ │ ├── entities/
-│ │ │ └── (TypeORM entities if needed)
-│ │ └── repositories/
-│ │ ├── AdminTypeOrmRepository.ts
-│ │ ├── AttendanceTypeOrmRepository.ts
-│ │ └── StudentTypeOrmRepository.ts
-│ │
-│ ├── types/
-│ │ └── express/
-│ │ └── index.d.ts
-│ │
-│ └── app.ts
-│
-├── .env
-├── .gitignore
-└── README.md
+    server/
+    │
+    ├── src/
+    │ │
+    │ ├── domain/
+    │ │ ├── entities/
+    │ │ │ ├── Admin.ts
+    │ │ │ ├── Attendance.ts
+    │ │ │ └── Student.ts
+    │ │ │
+    │ │ ├── ports/
+    │ │ │ ├── in/
+    │ │ │ │ ├── AttendanceServicePort.ts
+    │ │ │ │ ├── AuthServicePort.ts
+    │ │ │ │ └── StudentServicePort.ts
+    │ │ │ │
+    │ │ │ └── out/
+    │ │ │ ├── AdminRepositoryPort.ts
+    │ │ │ ├── AttendanceRepositoryPort.ts
+    │ │ │ └── StudentRepositoryPort.ts
+    │ │ │
+    │ │ └── use-cases/
+    │ │ ├── AttendanceUseCases.ts
+    │ │ ├── AuthUseCases.ts
+    │ │ └── StudentUseCases.ts
+    │ │
+    │ ├── infrastructure/
+    │ │ ├── api/
+    │ │ │ ├── controllers/
+    │ │ │ │ ├── AttendanceController.ts
+    │ │ │ │ ├── AuthController.ts
+    │ │ │ │ └── StudentController.ts
+    │ │ │ │
+    │ │ │ ├── middlewares/
+    │ │ │ │ └── authMiddleware.ts
+    │ │ │ │
+    │ │ │ └── routes/
+    │ │ │ ├── AttendanceRoutes.ts
+    │ │ │ ├── AuthRoutes.ts
+    │ │ │ └── StudentRoutes.ts
+    │ │ │
+    │ │ ├── config/
+    │ │ │ └── data-source.ts
+    │ │ │
+    │ │ └── persistence/
+    │ │ ├── entities/
+    │ │ │ └── (TypeORM entities if needed)
+    │ │ └── repositories/
+    │ │ ├── AdminTypeOrmRepository.ts
+    │ │ ├── AttendanceTypeOrmRepository.ts
+    │ │ └── StudentTypeOrmRepository.ts
+    │ │
+    │ ├── types/
+    │ │ └── express/
+    │ │ └── index.d.ts
+    │ │
+    │ └── app.ts
+    │
+    ├── .env
+    ├── .gitignore
+    └── README.md
 
 ---
 
